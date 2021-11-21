@@ -4,4 +4,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Another change'
+    return 'The goal it to test the next deploy'
