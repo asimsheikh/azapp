@@ -1,11 +1,9 @@
 import sqlite3
-
-from flask import Flask, g
+from flask import Flask, g, render_template
 
 DATABASE = "flaskr.db"
 
 app = Flask(__name__)
-
 app.config.from_object(__name__)
 
 def connect_db():
@@ -32,4 +30,7 @@ def close_db(error):
 
 @app.route('/')
 def index():
-    return 'Hello, World'
+    db = get_db()
+    cur = db.execute('select * from entries order by id desc')
+    entries = cur.fetchall()
+    return render_template('index.html', entries=entries)

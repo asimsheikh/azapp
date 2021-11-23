@@ -25,9 +25,38 @@ def logout(client):
 
 def test_index(client):
     resp = client.get('/', content_type="html/text")
-
     assert resp.status_code == 200
-    assert resp.data == b'Hello, World'
 
 def test_database():
-    assert Path("flaskr.db").is_file()
+    tester = Path("flaskr.db").is_file()
+    assert tester
+
+def test_empty_db(client):
+    resp = client.get('/')
+    assert b'No entries yet. Add some!' in resp.data
+
+def test_login_logout(client):
+    rv = login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    assert b'You were logged in' in rv.data
+
+    rv = logout(client)
+    assert b'You were logged out' in rv.data
+
+    rv = login(client, app.config["USERNAME"] + "x", app.config["PASSWORD"])
+    assert b'Invalid username' in rv.data
+
+    rv = login(client, app.config["USERNAME"], app.config["PASSWORD"] + "x")
+    assert b'Invalid password' in rv.data
+
+def test_messages(client):
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    rv = client.post(
+            "/add",
+            data=dict(title="<Hello>", text="<strong>HTML</strong> allowed here"),
+            follow_redirects=True,
+    )
+    assert b'No entries here so far' not in rv.data
+    assert b'&alt;Hello&gt;' in rv.data
+    assert b'<strong>HTML</strong> allowed here' in rv.data
+
+    
