@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from app import app
 
 def test_index():
@@ -14,3 +16,5 @@ def test_test():
     assert resp.status_code == 200
     assert resp.data == b'Test working'
 
+def test_database():
+    assert Path("flaskr.db").is_file()
