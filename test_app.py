@@ -7,3 +7,10 @@ def test_index():
     assert resp.status_code == 200
     assert resp.data == b'Hello, World'
 
+def test_test():
+    tester = app.test_client()
+    resp = tester.get('/test', content_type="html/text")
+
+    assert resp.status_code == 200
+    assert resp.data == b'Test working'
+
