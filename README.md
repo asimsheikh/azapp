@@ -1,3 +1,4 @@
-This is a test of the azure deployment process.
+The goal of this repo is to ensure that we can test the end to end development
+process and completion of an application.
 
-The goal is to see if we can launch at least 100 of these deployment options.
+It should go from creation into deployment on the azure platform. 
